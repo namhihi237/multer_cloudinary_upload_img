@@ -53,16 +53,15 @@ app.get("/upload", (req, res) => {
 
 
 app.post("/upload", upload.single("image"), async(req, res) => {
-    console.log(req.file.path);
-    uploadSingle(req.file.path).then(async(result) => {
-        let imageDetails = {
-            link: result.url,
-        }
-        var a = await Image.create(imageDetails);
-        console.log(a);
+    console.log(req.files);
+    const re = await uploadSingle(req.file.path);
+    var image = await Image.create({ link: re.url });
+    res.status(200).json({
+        status: 200,
+        image
     })
 
-    res.json(req.file)
+
 });
 
 
